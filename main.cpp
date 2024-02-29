@@ -76,10 +76,17 @@ int main(int argc, char* argv[]){
     
 
     SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
+#ifndef __APPLE__
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
-
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_ES);
+#else
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
+#endif
 
     SDL_GL_SetAttribute(SDL_GL_FRAMEBUFFER_SRGB_CAPABLE, 0);
 
@@ -97,7 +104,12 @@ int main(int argc, char* argv[]){
     SDL_GLContext context = SDL_GL_CreateContext(window);
 
 #ifndef __EMSCRIPTEN__
+
+#ifndef __APPLE__
     gladLoadGLES2Loader(SDL_GL_GetProcAddress);
+#else
+    gladLoadGLLoader(SDL_GL_GetProcAddress);
+#endif
     SDL_GL_MakeCurrent(window, context);
 #else
     SDL_GL_MakeCurrent(window, context);

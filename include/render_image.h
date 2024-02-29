@@ -9,6 +9,11 @@
 #include <glad.h>
 #include <SDL.h>
 
+#elif defined(__APPLE__)
+
+#include <glad.h>
+#include <SDL.h>
+
 #elif defined(__EMSCRIPTEN__)
 
 #include <emscripten.h>
